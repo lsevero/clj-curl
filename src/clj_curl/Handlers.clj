@@ -17,7 +17,7 @@
 
 (defn memhandler-init
   []
-  [[] (atom nil)])
+  [[] (atom "")])
 
 (defn memhandler-callback
   [this contents size nmemb userp]
@@ -35,7 +35,7 @@
 
 (defn memhandler-getString
   [this]
-  (str @(.state this)))
+  (String. @(.state this)))
 
 (defn memhandler-getSize
   [this]
@@ -62,7 +62,7 @@
 
 (defn filehandler-init
   [filename]
-  [[] (atom {:filename filename :data nil})])
+  [[] (atom {:filename filename :data ""})])
 
 (defn filehandler-callback
   [this contents size nmemb userp]
@@ -82,7 +82,7 @@
 
 (defn filehandler-getString
   [this]
-  (str (-> @(.state this) :data)))
+  (String. (-> @(.state this) :data)))
 
 (defn filehandler-getSize
   [this]
