@@ -53,7 +53,7 @@
   :constructors {[String] []}
   :state state
   :prefix "filehandler-"
-  :methods [[^{Override {}} callback [com.sun.jna.Pointer int int com.sun.jna.Pointer] int]
+  :methods [[callback [com.sun.jna.Pointer int int com.sun.jna.Pointer] int]
             [getString [] String]
             [getBytes [] bytes]
             [getSize [] int]
