@@ -6,10 +6,10 @@
   []
   (.invoke (Function/getFunction "curl" "curl_easy_init") Pointer (to-array [])))
 
-(defn easy-setopt ^int
-  [^Pointer curl ^int i param]
+(defn easy-setopt ^Integer
+  [^Pointer curl ^Integer i param]
   (.invoke (Function/getFunction "curl" "curl_easy_setopt") Pointer (to-array [curl i param])))
 
-(defn easy-perform ^int
+(defn easy-perform ^Integer
   [^Pointer curl]
   (.invoke (Function/getFunction "curl" "curl_easy_perform") Pointer (to-array [curl])))

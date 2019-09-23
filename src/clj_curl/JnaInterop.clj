@@ -18,7 +18,8 @@
           [getString [] String]
           [getBytes [] bytes]]
           [getSize [] int]
-          [reset [] void]) 
+          [reset [] void]
+          [close [] void]) 
 
 (defn memhandler-init
   []
