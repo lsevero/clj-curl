@@ -1,7 +1,8 @@
 (ns clj-curl.easy
   (:import [com.sun.jna NativeLibrary Pointer]
            [com.sun.jna.ptr PointerByReference DoubleByReference LongByReference]
-           [clj_curl.Handlers MemHandler FileHandler]))
+           [clj_curl.Handlers MemHandler FileHandler])
+  (:require [clj-curl.opts :as opts]))
 
 (def ^:private libcurl (com.sun.jna.NativeLibrary/getInstance "curl"))
 
