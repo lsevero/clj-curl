@@ -9,22 +9,27 @@
 (def handler 20011)
 
 (defn init ^Pointer
+  "https://curl.haxx.se/libcurl/c/curl_easy_init.html"
   []
   (.invoke (.getFunction libcurl "curl_easy_init") Pointer (to-array [])))
 
 (defn setopt ^Integer
+  "https://curl.haxx.se/libcurl/c/curl_easy_setopt.html"
   [^Pointer curl ^Integer opt param]
   (.invoke (.getFunction libcurl "curl_easy_setopt") Integer (to-array [curl opt param])))
 
 (defn perform ^Integer
+  "https://curl.haxx.se/libcurl/c/curl_easy_perform.html"
   [^Pointer curl]
   (.invoke (.getFunction libcurl "curl_easy_perform") Integer (to-array [curl])))
 
 (defn cleanup
+  "https://curl.haxx.se/libcurl/c/curl_easy_cleanup.html"
   [^Pointer curl]
   (.invoke (.getFunction libcurl "curl_easy_cleanup") Void/TYPE (to-array [])))
 
 (defn getinfo ^Integer
+  "https://curl.haxx.se/libcurl/c/curl_easy_getinfo.html"
   [^Pointer curl ^Integer opt param]
   (.invoke (.getFunction libcurl "curl_easy_getinfo") Integer (to-array [curl opt param])))
 
@@ -51,8 +56,14 @@
         (if (= value Pointer/NULL) "" value)))))
 
 (defn duphandle
+  "https://curl.haxx.se/libcurl/c/curl_easy_duphandle.html"
   [^Pointer curl]
   (.invoke (.getFunction libcurl "curl_easy_duphandle") Pointer (to-array [curl])))
+
+(defn reset
+  "https://curl.haxx.se/libcurl/c/curl_easy_reset.html"
+  [^Pointer curl]
+  (.invoke (.getFunction libcurl "curl_easy_reset") Void/TYPE (to-array [curl])))
 
 (def c (init))
 (def m (clj_curl.Handlers.MemHandler.))
