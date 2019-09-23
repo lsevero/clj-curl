@@ -35,7 +35,7 @@
 
 (defn memhandler-getString
   [this]
-  (String. @(.state this)))
+  (str @(.state this)))
 
 (defn memhandler-getSize
   [this]
@@ -53,7 +53,7 @@
   :constructors {[String] []}
   :state state
   :prefix "filehandler-"
-  :methods [[callback [com.sun.jna.Pointer int int com.sun.jna.Pointer] int]
+  :methods [[^{Override {}} callback [com.sun.jna.Pointer int int com.sun.jna.Pointer] int]
             [getString [] String]
             [getBytes [] bytes]
             [getSize [] int]
@@ -82,7 +82,7 @@
 
 (defn filehandler-getString
   [this]
-  (String. (-> @(.state this) :data)))
+  (str (-> @(.state this) :data)))
 
 (defn filehandler-getSize
   [this]
@@ -95,3 +95,4 @@
 (defn filehandler-deref
   [this]
   (.getString this))
+
