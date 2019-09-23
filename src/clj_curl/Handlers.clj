@@ -1,6 +1,6 @@
 (ns clj-curl.Handlers
     (:import [com.sun.jna Callback Pointer]
-             [java.io ByteArrayOutputStream IOException]))
+             [java.io ByteArrayOutputStream File FileOutputStream]))
 
 (gen-class
   :name clj_curl.Handlers.MemHandler
@@ -71,7 +71,8 @@
           ^bytes data (.getByteArray contents 0 s)]
       (do
         (swap! (.state this) assoc :data data)
-        (spit (-> @(.state this) :filename) (String. (-> @(.state this) :data)))
+        (with-open [file (FileOutputStream. (File. (-> @(.state this) :filename)) true)]
+          (.write file (-> @(.state this) :data)))
         s))
     (catch Exception e
       (.printStackTrace e))))
