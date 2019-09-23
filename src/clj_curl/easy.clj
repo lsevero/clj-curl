@@ -84,14 +84,16 @@
   "https://curl.haxx.se/libcurl/c/curl_easy_setopt.html"
   ^Integer
   [^Pointer curl ^Integer opt param]
-  (case (type param)
-    clojure.lang.PersistentVector (let [slist (Memory. NativeLong/SIZE)]
-                                    (do
-                                      (doseq [s param]
-                                        ;TODO: raise a exception if the reeturned ptr is NULL
-                                        (slist-append slist s))
-                                      (recur curl opt slist)))
-    java.lang.Boolean (if (= param true) (recur curl opt 1) (recur curl opt 0))
+  (if (= (type param) clojure.lang.PersistentVector)
+    ;nil
+    (let [slist (Memory. NativeLong/SIZE)]
+      (do
+        (doseq [s param]
+          ;TODO: raise a exception if the reeturned ptr is NULL
+          (slist-append slist s))
+        (let [ret (.invoke (.getFunction libcurl "curl_easy_setopt") Integer (to-array [curl opt slist]))]
+          (slist-free-all slist)
+          ret)))
     (.invoke (.getFunction libcurl "curl_easy_setopt") Integer (to-array [curl opt param]))))
 
 (def c (init))
