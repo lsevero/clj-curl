@@ -1,6 +1,6 @@
-(ns clj-curl.core-test
+(ns clj-curl.easy-test
   (:require [clojure.test :refer :all]
-            [clj-curl.core :refer :all]))
+            [clj-curl.easy :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."
