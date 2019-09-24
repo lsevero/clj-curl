@@ -45,7 +45,8 @@
   [this]
   (.getString this))
 
-
+;FileHandler will append all of the data to the file named filename
+;even if it already exists
 (gen-class
   :name clj_curl.Handlers.FileHandler
   :implements [com.sun.jna.Callback]
