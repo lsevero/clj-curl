@@ -21,4 +21,5 @@
       (println "speed download: " (curl-easy/getinfo-double curl opts/speed-download))
       ;deref-ing a Handler will extract the handler contents and convert it to a string
       ;another little helper
-      (println "contents: " @mem))))
+      (println "contents: " @mem)
+      (curl-easy/cleanup curl))))

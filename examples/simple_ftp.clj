@@ -12,4 +12,5 @@
       (curl-easy/setopt curl opts/url "ftp://speedtest.tele2.net/512KB.zip")
       (curl-easy/setopt curl opts/writefunction filehldr)
       (curl-easy/perform curl)
-      (println "speed download: " (curl-easy/getinfo-double curl opts/speed-download)))))
+      (println "speed download: " (curl-easy/getinfo-double curl opts/speed-download))
+      (curl-easy/cleanup curl))))

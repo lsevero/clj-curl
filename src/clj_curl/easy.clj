@@ -21,7 +21,7 @@
 (defn cleanup
   "https://curl.haxx.se/libcurl/c/curl_easy_cleanup.html"
   [^Pointer curl]
-  (.invoke (.getFunction libcurl "curl_easy_cleanup") Void/TYPE (to-array [])))
+  (.invoke (.getFunction libcurl "curl_easy_cleanup") Void/TYPE (to-array [curl])))
 
 (defn getinfo
   "https://curl.haxx.se/libcurl/c/curl_easy_getinfo.html"
@@ -92,5 +92,3 @@
           (slist-free-all slist)
           ret)))
     (.invoke (.getFunction libcurl "curl_easy_setopt") Integer (to-array [curl opt param]))))
-
-(def f (clj_curl.Handlers.FileHandler. "/tmp/pudim.html"))
