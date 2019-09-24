@@ -7,9 +7,7 @@
 (defn post [url & opts]
   (let [curl (curl-easy/init)
         opts (first opts)
-        mem (MemHandler.)
-        slist (Memory. NativeLong/SIZE)
-        headers (map #(format "%s: %s" (first %) (second %)) (:headers opts))]
+        mem (MemHandler.)]
     (when curl
       (curl-easy/setopt curl opts/url url)
       (curl-easy/setopt curl opts/postfields "name=daniel")
