@@ -1,6 +1,6 @@
 (ns clj-curl.Handlers
     (:import [com.sun.jna Callback Pointer]
-             [java.io ByteArrayOutputStream File FileOutputStream]))
+             [java.io ByteArrayOutputStream IOException]))
 
 (gen-class
   :name clj_curl.Handlers.MemHandler
@@ -17,7 +17,7 @@
 
 (defn memhandler-init
   []
-  [[] (atom "")])
+  [[] (atom nil)])
 
 (defn memhandler-callback
   [this contents size nmemb userp]
@@ -48,21 +48,17 @@
 
 (gen-class
   :name clj_curl.Handlers.FileHandler
-  :implements [com.sun.jna.Callback clojure.lang.IDeref]
+  :implements [com.sun.jna.Callback]
   :init init
   :constructors {[String] []}
   :state state
   :prefix "filehandler-"
   :methods [[^{Override {}} callback [com.sun.jna.Pointer int int com.sun.jna.Pointer] int]
-            [getString [] String]
-            [getBytes [] bytes]
-            [getSize [] int]
-            [getFilename [] String]
-            [deref [] String]])
+            [getFilename [] String]])
 
 (defn filehandler-init
   [filename]
-  [[] (atom {:filename filename :data ""})])
+  [[] (atom {:filename filename :data nil})])
 
 (defn filehandler-callback
   [this contents size nmemb userp]
@@ -71,29 +67,11 @@
           ^bytes data (.getByteArray contents 0 s)]
       (do
         (swap! (.state this) assoc :data data)
-        (with-open [file (FileOutputStream. (File. (-> @(.state this) :filename)) true)]
-          (.write file (-> @(.state this) :data)))
+        (spit (-> @(.state this) :filename) (String. (-> @(.state this) :data)))
         s))
     (catch Exception e
       (.printStackTrace e))))
 
-(defn filehandler-getBytes
-  [this]
-  (-> @(.state this) :data))
-
-(defn filehandler-getString
-  [this]
-  (String. (-> @(.state this) :data)))
-
-(defn filehandler-getSize
-  [this]
-  (count (-> @(.state this) :data)))
-
 (defn filehandler-getFilename
   [this]
   (-> @(.state this) :filename))
-
-(defn filehandler-deref
-  [this]
-  (.getString this))
-

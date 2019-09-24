@@ -8,6 +8,7 @@
   :profiles {:dev {:dependencies [[org.clojure/clojure "1.10.0"]]
                    :plugins [[cider/cider-nrepl "0.22.3"]
                              [lein-cloverage "1.1.1"]]
-                   :source-paths ["src" "test"]}
+                   :source-paths ["src" "test" "examples"]}
              :test {:dependencies [[org.clojure/clojure "1.10.0"]]}}
+  :main main
   :repl-options {:init-ns clj-curl.easy})

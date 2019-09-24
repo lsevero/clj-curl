@@ -6,9 +6,6 @@
 
 (def ^:private libcurl (com.sun.jna.NativeLibrary/getInstance "curl"))
 
-(def url 10002)
-(def handler 20011)
-
 (defn init
   "https://curl.haxx.se/libcurl/c/curl_easy_init.html"
   ^Pointer 
@@ -96,6 +93,4 @@
           ret)))
     (.invoke (.getFunction libcurl "curl_easy_setopt") Integer (to-array [curl opt param]))))
 
-(def c (init))
-(def m (clj_curl.Handlers.MemHandler.))
 (def f (clj_curl.Handlers.FileHandler. "/tmp/pudim.html"))
