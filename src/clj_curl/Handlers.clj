@@ -31,7 +31,7 @@
 
 (defn memhandler-getBytes
   [this]
-  (.state this))
+  (.toByteArray (.state this)))
 
 (defn memhandler-getString
   [this]
@@ -39,7 +39,7 @@
 
 (defn memhandler-getSize
   [this]
-  (count (.state this)))
+  (count (.getBytes this)))
 
 (defn memhandler-deref
   [this]
