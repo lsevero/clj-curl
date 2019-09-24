@@ -11,4 +11,5 @@
                    :main main
                    :source-paths ["src" "test" "examples"]}
              :test {:dependencies [[org.clojure/clojure "1.10.0"]]}}
+  :source-paths ["src"]
   :repl-options {:init-ns clj-curl.easy})
