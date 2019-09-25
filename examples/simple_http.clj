@@ -19,7 +19,7 @@
       ;I have added these getinfo wrapper functions to make things a little bit easier
       ;without going down too much on the low level stuff
       (println "speed download: " (curl-easy/getinfo-double curl opts/speed-download))
-      ;deref-ing a Handler will extract the handler contents and convert it to a string
+      ;deref-ing a MemHandler will extract the handler contents and convert it to a string
       ;another little helper
       (println "contents: " @mem)
       (curl-easy/cleanup curl))))

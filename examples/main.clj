@@ -6,8 +6,7 @@
 
 (defn -main
   []
-  ;(simple-http)
-  ;(simple-ftp)
-  (ftp-upload)
-  )
+  (simple-http)
+  (simple-ftp)
+  (ftp-upload))
 
