@@ -1,6 +1,6 @@
 (ns clj-curl.Handlers
     (:import [com.sun.jna Callback Pointer]
-             [java.io ByteArrayInputStream ByteArrayOutputStream File FileOutputStream]))
+             [java.io ByteArrayInputStream ByteArrayOutputStream File FileOutputStream FileInputStream]))
 
 (gen-class
   ;This class opens a buffer and write all the received data to it.
@@ -50,7 +50,7 @@
 (gen-class
   ;This class opens a file and write all the received data to it.
   ;It was made to be used with WRITEFUNCTION.
-  ;FileHandler will append all of the data to the file named filename even if it already exists. 
+  ;FileHandler will overwrite all of the data to the file named filename if it already exists. 
   :name clj_curl.Handlers.FileHandler
   :implements [com.sun.jna.Callback]
   :init init
@@ -58,11 +58,12 @@
   :state state
   :prefix "filehandler-"
   :methods [[^{Override {}} callback [com.sun.jna.Pointer int int com.sun.jna.Pointer] int]
-            [getFilename [] String]])
+            [getFilename [] String]
+            [close [] Void]])
 
 (defn filehandler-init
   [filename]
-  [[] filename])
+  [[] {:filename filename :stream (-> filename File. FileOutputStream.)}])
 
 (defn filehandler-callback
   [this contents size nmemb userp]
@@ -70,15 +71,18 @@
     (let [^int s (* size nmemb)
           ^bytes data (.getByteArray contents 0 s)]
       (do
-        (with-open [file (FileOutputStream. (File. (.getFilename this)) true)]
-          (.write file data))
+        (.write (-> this .state :stream) data)
         s))
     (catch Exception e
       (.printStackTrace e))))
 
 (defn filehandler-getFilename
   [this]
-  (.state this))
+  (-> this .state :filename))
+
+(defn filehandler-close
+  [this]
+  (-> this .state :stream .close))
 
 (gen-class
   ;This class opens a populated buffer and waits for something consume its data.
