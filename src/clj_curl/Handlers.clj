@@ -102,6 +102,10 @@
     (let [^int s (* size nmemb)
           ^bytes buffer (byte-array s nil)
           ^int n-read-bytes (.read (.state this) buffer 0 s)]
-      (if (= -1 n-read-bytes) 0 (.write contents 0 buffer 0 n-read-bytes)))
+      (if (= -1 n-read-bytes)
+        0
+        (do
+          (.write contents 0 buffer 0 n-read-bytes)
+          n-read-bytes)))
     (catch Exception e
       (.printStackTrace e))))
