@@ -1,8 +1,10 @@
 (ns clj-curl.Handlers
     (:import [com.sun.jna Callback Pointer]
-             [java.io ByteArrayOutputStream File FileOutputStream]))
+             [java.io ByteArrayInputStream ByteArrayOutputStream File FileOutputStream]))
 
 (gen-class
+  ;This class opens a buffer and write all the received data to it.
+  ;Made to be used with WRITEFUNCTION.
   :name clj_curl.Handlers.MemHandler
   :implements [com.sun.jna.Callback clojure.lang.IDeref]
   :init init
@@ -45,9 +47,10 @@
   [this]
   (.getString this))
 
-;FileHandler will append all of the data to the file named filename
-;even if it already exists
 (gen-class
+  ;This class opens a file and write all the received data to it.
+  ;It was made to be used with WRITEFUNCTION.
+  ;FileHandler will append all of the data to the file named filename even if it already exists. 
   :name clj_curl.Handlers.FileHandler
   :implements [com.sun.jna.Callback]
   :init init
@@ -55,11 +58,7 @@
   :state state
   :prefix "filehandler-"
   :methods [[^{Override {}} callback [com.sun.jna.Pointer int int com.sun.jna.Pointer] int]
-            [getString [] String]
-            [getBytes [] bytes]
-            [getSize [] int]
-            [getFilename [] String]
-            [deref [] String]])
+            [getFilename [] String]])
 
 (defn filehandler-init
   [filename]
@@ -80,3 +79,29 @@
 (defn filehandler-getFilename
   [this]
   (.state this))
+
+(gen-class
+  ;This class opens a populated buffer and waits for something consume its data.
+  ;Made to be used with READFUNCTION
+  :name clj_curl.Handlers.MemReader
+  :implements [com.sun.jna.Callback]
+  :init init
+  :constructors {[bytes] []
+                 [String] []}
+  :state state
+  :prefix "memreader-"
+  :methods [[^{Override {}} callback [com.sun.jna.Pointer int int com.sun.jna.Pointer] int]])
+
+(defn memreader-init 
+  [array]
+  [[] (ByteArrayInputStream. (byte-array (map byte array)))])
+
+(defn memreader-callback
+  [this contents size nmemb userp]
+  (try
+    (let [^int s (* size nmemb)
+          ^bytes buffer (byte-array s nil)
+          ^int n-read-bytes (.read (.state this) buffer 0 s)]
+      (if (= -1 n-read-bytes) 0 (.write contents 0 buffer 0 n-read-bytes)))
+    (catch Exception e
+      (.printStackTrace e))))
