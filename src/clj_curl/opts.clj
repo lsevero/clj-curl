@@ -1,13 +1,6 @@
 (ns clj-curl.opts
   (:refer-clojure :exclude (proxy quote range resolve)))
 
-;This file was generating by the python code
-;import pycurl
-;for i in dir(pycurl): 
-;    print("(def ^:const ",i.lower() ,getattr(pycurl,i),")") 
-;
-;too boring to write from scratch
-
 (def ^:const accepttimeout-ms 212)
 (def ^:const accept-encoding 10102)
 (def ^:const address-scope 171)
@@ -323,6 +316,7 @@
 (def ^:const maxredirs 68)
 (def ^:const max-recv-speed-large 30146)
 (def ^:const max-send-speed-large 30145)
+(def ^:const mimepost 269)
 (def ^:const m-chunk-length-penalty-size 30010)
 (def ^:const m-content-length-penalty-size 30009)
 (def ^:const m-maxconnects 6)
@@ -613,3 +607,4 @@
 (def ^:const writeheader 10029)
 (def ^:const xferinfofunction 20219)
 (def ^:const xoauth2-bearer 10220)
+(def ^:const zero-terminated 18446744073709551615); ((size_t) -1)
