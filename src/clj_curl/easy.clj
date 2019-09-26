@@ -1,10 +1,9 @@
 (ns clj-curl.easy
   (:import [com.sun.jna NativeLibrary Pointer Memory NativeLong]
-           [com.sun.jna.ptr PointerByReference DoubleByReference LongByReference]
-           [clj_curl.Handlers MemHandler FileHandler MemReader])
+           [com.sun.jna.ptr PointerByReference DoubleByReference LongByReference])
   (:require [clj-curl.opts :as opts]))
 
-(def ^:private libcurl (com.sun.jna.NativeLibrary/getInstance "curl"))
+(def libcurl (com.sun.jna.NativeLibrary/getInstance "curl"))
 
 (defn init
   "https://curl.haxx.se/libcurl/c/curl_easy_init.html"
@@ -91,46 +90,6 @@
           (slist-free-all slist)
           ret)))
     (.invoke (.getFunction libcurl "curl_easy_setopt") Integer (to-array [curl opt param]))))
-
-(defn mime-init
-  "https://curl.haxx.se/libcurl/c/curl_mime_init.html"
-  ^Pointer
-  [^Pointer curl]
-  (.invoke (.getFunction libcurl "curl_mime_init") Pointer (to-array [curl])))
-
-(defn mime-addpart
-  "https://curl.haxx.se/libcurl/c/curl_mime_addpart.html"
-  ^Pointer
-  [^Pointer mime]
-  (.invoke (.getFunction libcurl "curl_mime_addpart") Pointer (to-array [curl])))
-
-(defn mime-name
-  "https://curl.haxx.se/libcurl/c/curl_mime_name.html"
-  ^Integer
-  [^Pointer part ^String s]
-  (.invoke (.getFunction libcurl "curl_mime_name") Integer (to-array [part s])))
-
-(defn mime-data
-  "https://curl.haxx.se/libcurl/c/curl_mime_data.html"
-  ^Integer
-  ([^Pointer part ^String data]
-   (mime-data part data (count data)))
-  ([^Pointer part ^String data ^Integer size]
-   (.invoke (.getFunction libcurl "curl_mime_data") Integer (to-array [part s size]))))
-
-(defn mime-type
-  "https://curl.haxx.se/libcurl/c/curl_mime_type.html"
-  ^Integer
-  [^Pointer part ^String mimetype]
-  (.invoke (.getFunction libcurl "curl_mime_type") Integer (to-array [part s])))
-
-(defn mime-filename
-  "https://curl.haxx.se/libcurl/c/curl_mime_filename.html"
-  ^Integer
-  [^Pointer part ^String filename]
-  (.invoke (.getFunction libcurl "curl_mime_filename") Integer (to-array [part filename])))
-
-;TODO curl_mime_headers, curl_mime_subparts, curl_mime_free, curl_mime_data_cb, curl_mime_encoder, curl_mime_filedata
 
 (defn escape
   "https://curl.haxx.se/libcurl/c/curl_easy_escape.html"
