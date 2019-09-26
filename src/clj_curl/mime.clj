@@ -1,4 +1,5 @@
 (ns clj-curl.mime
+  (:refer-clojure :exclude (name type))
   (:require [clj-curl.easy :refer [libcurl]]
             [com.sun.jna Pointer]))
 
