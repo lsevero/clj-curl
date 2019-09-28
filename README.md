@@ -22,8 +22,8 @@ Deprecated functions like `curl_formadd` will not be added here, you could imple
 ## Handlers? What are they??
 
 libcurl depends A LOT in C callbacks to do stuff (mostly reading and writing).
-The way that the JNA creates a '''c callback''' is creating a class that implements the `Callback` interface which you should define the contents of the inherit `callback` function.
-I've created some handler to perform some more basic and common stuff, like reading/writing from memory and reading/writing from/to files.
+The way that the JNA creates a '''c callback''' is creating a class that implements the `Callback` interface which you should define the contents of the inherited `callback` function.
+I've created some handlers to perform some more basic and common stuff, like reading/writing from memory and reading/writing from/to files.
 Every place that the C API asks for a C callback you should instantiate one of the Handler classes and pass its instance as a argument to `setopt`.
 Please check the examples folder to see how to use and import them.
 They are `gen-class` java classes, so you should import them always with the `import` clause, not `require`.
