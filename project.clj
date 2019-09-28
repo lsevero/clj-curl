@@ -9,7 +9,7 @@
                    :plugins [[cider/cider-nrepl "0.22.3"]
                              [lein-cloverage "1.1.1"]]
                    :main main
+                   :repl-options {:init-ns clj-curl.easy}
                    :source-paths ["src" "test" "examples"]}
              :test {:dependencies [[org.clojure/clojure "1.10.0"]]}}
-  :source-paths ["src"]
-  :repl-options {:init-ns clj-curl.easy})
+  :source-paths ["src"])
