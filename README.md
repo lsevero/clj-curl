@@ -2,6 +2,8 @@
 
 curl for clojure using JNA, because we love curl.
 
+[![Clojars Project](https://img.shields.io/clojars/v/clj-curl.svg)](https://clojars.org/clj-curl)
+
 ## But... why?
 
 Clojure definitely has excellent libraries to handle http connections like clj-http and other things, however, none of them are complete as curl.
