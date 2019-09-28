@@ -8,7 +8,7 @@ curl for clojure using JNA, because we love curl.
 
 Clojure definitely has excellent libraries to handle http connections like clj-http and other things, however, none of them are complete as curl.
 There is a very good reason why curl has been ported for almost every programming language there is, because curl is just awesome.
-Curl supports a lot of protocols, like HTTP(S), FTP(S), SFTP, IMAP(S), POP3(S), TFTP, SMB, SCP, RTMP, TELNET and more, checkout ![protocols list](https://ec.haxx.se/protocols-curl.html) for the full list.
+Curl supports a lot of protocols, like HTTP(S), FTP(S), SFTP, IMAP(S), POP3(S), TFTP, SMB, SCP, RTMP, TELNET and more, checkout [protocols list](https://ec.haxx.se/protocols-curl.html) for the full list.
 The curl's easy API is really easy. This sentence is not redundant as it appear, curl easy API is easy to use even with pure C, and it is so simple and well done that can be easily ported to other programming languages.
 
 This library tries to be as close as possible to the C API. In case of doubts go to the examples folder and the official libcurl docs.
@@ -36,7 +36,7 @@ Also, besides this java handlers you could use the libc `fwrite` and `fread` to 
 
 There is nothing much to doc here, because we are just exposing the C curl API.
 99% of the time you will be setting some options to `setopt`, passing some handlers to read/write data and exec a `perform`.
-The real useful docs are the official ones found at ![official docs](https://curl.haxx.se/libcurl/c/), it should be easy enough to read a C program and port it to the clojure interface.
+The real useful docs are the official ones found at [official docs](https://curl.haxx.se/libcurl/c/), it should be easy enough to read a C program and port it to the clojure interface.
 
 ## TODO list
 
