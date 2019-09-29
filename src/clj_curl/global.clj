@@ -1,6 +1,5 @@
 (ns clj-curl.global
-  (:require [clj-curl.easy :refer [libcurl]]
-            [com.sun.jna Pointer]))
+  (:require [clj-curl.easy :refer [libcurl]]))
 
 (defn init
   "https://curl.haxx.se/libcurl/c/curl_global_init.html"
