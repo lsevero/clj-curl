@@ -81,7 +81,6 @@
   ^Integer
   [^Pointer curl ^Integer opt param]
   (if (= (type param) clojure.lang.PersistentVector)
-    ;nil
     (let [slist (Memory. NativeLong/SIZE)]
       (do
         (doseq [s param]

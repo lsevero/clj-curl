@@ -1,7 +1,7 @@
 (ns clj-curl.mime
   (:refer-clojure :exclude (name type))
-  (:require [clj-curl.easy :refer [libcurl]]
-            [com.sun.jna Pointer]))
+  (:require [clj-curl.easy :refer [libcurl slist-append slist-free-all]]
+            [com.sun.jna Pointer Memory NativeLong]))
 
 (defn init
   "https://curl.haxx.se/libcurl/c/curl_mime_init.html"
@@ -41,5 +41,41 @@
   [^Pointer part ^String filename]
   (.invoke (.getFunction libcurl "curl_mime_filename") Integer (to-array [part filename])))
 
-;TODO curl_mime_headers, curl_mime_subparts, curl_mime_free, curl_mime_data_cb, curl_mime_encoder, curl_mime_filedata
+(defn free
+  "https://curl.haxx.se/libcurl/c/curl_mime_free.html"
+  [^Pointer mime]
+  (.invoke (.getFunction libcurl "curl_mime_free") Void (to-array [mime])))
+
+(defn subparts
+  "https://curl.haxx.se/libcurl/c/curl_mime_subparts.html"
+  ^Integer
+  [^Pointer part ^Pointer subparts]
+  (.invoke (.getFunction libcurl "curl_mime_subparts") Integer (to-array [part subparts])))
+
+(defn hearders
+  "https://curl.haxx.se/libcurl/c/curl_mime_headers.html"
+  ^Integer
+  [^Pointer part headers take-ownership]
+  (if (= clojure.lang.PersistentVector (type headers))
+    (let [slist (Memory. NativeLong/SIZE)]
+      (doseq [s param]
+        (slist-append slist s))
+      (let [ret (.invoke (.getFunction libcurl "curl_mime_headers") Integer (to-array [part headers take-ownership]))]
+        (slist-free-all slist)
+        ret))
+    (throw (Exception. "headers should be a vector."))))
+
+(defn filedata
+  "https://curl.haxx.se/libcurl/c/curl_mime_filedata.html"
+  ^Integer
+  [^Pointer part ^String filename]
+  (.invoke (.getFunction libcurl "curl_mime_filedata") Integer (to-array [part filename])))
+
+(defn encoder
+  "https://curl.haxx.se/libcurl/c/curl_mime_encoder.html"
+  ^Integer
+  [^Pointer part ^String encoding]
+  (.invoke (.getFunction libcurl "curl_mime_encoder") Integer (to-array [part encoding])))
+
+;TODO curl_mime_data_cb
 
