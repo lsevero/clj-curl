@@ -34,9 +34,14 @@ Also, besides this java handlers you could use the libc `fwrite` and `fread` to 
 
 ## Docs
 
-There is nothing much to doc here, because we are just exposing the C curl API.
+Three things that you should now before using this library:
+* You should use the handlers defined in `clj-curl.Handlers` instead of C Callbacks, or define your own
+* You can use plain clojure vectors instead of curl_slists when using `setopt`
+* Deprecated functions like `curl_formadd` will not be added here
+
+Besides that, there is nothing much to doc here, because we are just exposing the C curl API.
 99% of the time you will be setting some options to `setopt`, passing some handlers to read/write data and exec a `perform`.
-The real useful docs are the official ones found at [official docs](https://curl.haxx.se/libcurl/c/), it should be easy enough to read a C program and port it to the clojure interface.
+The real useful docs are the official ones found at [official docs](https://curl.haxx.se/libcurl/c/), check out the examples folder and should be easy enough to read a C program and port it to the clojure interface.
 
 ## TODO list
 
