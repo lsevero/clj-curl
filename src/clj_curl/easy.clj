@@ -104,3 +104,15 @@
   ^String
   [^Pointer curl ^String s]
   (.invoke (.getFunction libcurl "curl_easy_unescape") String (to-array [curl s 0 Pointer/NULL])))
+
+(defn getdate
+  "https://curl.haxx.se/libcurl/c/curl_getdate.html"
+  ^Integer
+  [^String date-str]
+  (.invoke (.getFunction libcurl "curl_getdate") String (to-array [date-str Pointer/NULL])))
+
+(defn version
+  "https://curl.haxx.se/libcurl/c/curl_version.html"
+  ^String
+  []
+  (.invoke (.getFunction libcurl "curl_version") String (to-array [])))
