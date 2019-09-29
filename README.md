@@ -47,7 +47,6 @@ The real useful docs are the official ones found at [official docs](https://curl
 
 * `multi` interface
 * finish the `mime` namespace
-* add the `global` namespace
  
 ## License
 
