@@ -8,7 +8,7 @@ curl for clojure using JNA, because we love curl.
 
 Clojure definitely has excellent libraries to handle http connections like clj-http and other things, however, none of them are complete as curl.
 There is a very good reason why curl has been ported for almost every programming language there is, because curl is just awesome.
-Curl supports a lot of protocols, like HTTP(S), FTP(S), SFTP, IMAP(S), POP3(S), TFTP, SMB, SCP, RTMP, TELNET and more, checkout [protocols list](https://ec.haxx.se/protocols-curl.html) for the full list.
+Curl supports a lot of protocols, like HTTP(S), FTP(S), SFTP, IMAP(S), POP3(S), TFTP, SMB, SCP, RTMP, TELNET and more, check out [protocols list](https://ec.haxx.se/protocols-curl.html) for the full list.
 The curl's easy API is really easy. This sentence is not redundant as it appear, curl easy API is easy to use even with pure C, and it is so simple and well done that can be easily ported to other programming languages.
 
 This library tries to be as close as possible to the C API. In case of doubts go to the examples folder and the official libcurl docs.
@@ -19,7 +19,7 @@ The usage of this library is basically the same as the libcurl in C.
 Everything is mutable, so be careful. This library is just about exposing the C api to the clojure world, without adding a lot of abstractions to make things easier or doing stuff the '''clojure way'''.
 Just create a curl handler wrapped in a function without exposing the curl's state to your applications and you should be fine.
 
-Deprecated functions like `curl_formadd` will not be added here, you could implement them yourself, however if you see the official docs saying to not use a function, do yourself a favor and not use it.
+Deprecated functions like `curl_formadd` will not be added here, you could implement them yourself, however if you see the official docs saying to not use a function, do yourself a favor and do not use it.
 
 ## Handlers? What are they??
 
