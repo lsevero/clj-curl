@@ -1,5 +1,5 @@
 (ns clj-curl.mime
-  (:refer-clojure :exclude (name type))
+  (:refer-clojure :exclude [name type])
   (:require [clj-curl.easy :refer [libcurl slist-append slist-free-all]]
             [com.sun.jna Pointer Memory NativeLong]))
 

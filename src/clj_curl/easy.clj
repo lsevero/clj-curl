@@ -1,4 +1,5 @@
 (ns clj-curl.easy
+  (:refer-clojure :exclude [send])
   (:import [com.sun.jna NativeLibrary Pointer Memory NativeLong]
            [com.sun.jna.ptr PointerByReference DoubleByReference LongByReference])
   (:require [clj-curl.opts :as opts]))
@@ -115,3 +116,35 @@
   ^String
   []
   (.invoke (.getFunction libcurl "curl_version") String (to-array [])))
+
+(defn pause
+  "https://curl.haxx.se/libcurl/c/curl_easy_pause.html"
+  ^Integer
+  [^Pointer curl ^Integer bitmask]
+  (.invoke (.getFunction libcurl "curl_easy_pause") Integer (to-array [curl bitmask])))
+
+(defn send
+  "https://curl.haxx.se/libcurl/c/curl_easy_send.html"
+  ^Integer
+  ([^Pointer curl buffer ^LongByReference n]
+   (send curl buffer (count buffer) n))
+  ([^Pointer curl buffer ^Integer buflen ^LongByReference n]
+   (.invoke (.getFunction libcurl "curl_easy_send") Integer (to-array [curl buffer buflen n]))))
+
+(defn recv
+  "https://curl.haxx.se/libcurl/c/curl_easy_recv.html"
+  ^Integer
+  [^Pointer curl buffer ^Integer buflen ^LongByReference n]
+  (.invoke (.getFunction libcurl "curl_easy_recv") Integer (to-array [curl buffer buflen n])))
+
+(defn strerror
+  "https://curl.haxx.se/libcurl/c/curl_easy_strerror.html"
+  ^String
+  [^Integer errornum]
+  (.invoke (.getFunction libcurl "curl_easy_strerror") String (to-array [errornum])))
+
+(defn upkeep
+  "https://curl.haxx.se/libcurl/c/curl_easy_upkeep.html"
+  ^Integer
+  [^Pointer curl]
+  (.invoke (.getFunction libcurl "curl_easy_upkeep") Integer (to-array [curl])))

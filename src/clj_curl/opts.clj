@@ -1,5 +1,5 @@
 (ns clj-curl.opts
-  (:refer-clojure :exclude (proxy quote range resolve)))
+  (:refer-clojure :exclude [proxy quote range resolve]))
 
 (def ^:const accepttimeout-ms 212)
 (def ^:const accept-encoding 10102)
