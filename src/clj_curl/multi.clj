@@ -1,7 +1,7 @@
 (ns clj-curl.multi
-  (:require [clj-curl.easy :refer [libcurl]]
-            [com.sun.jna Pointer]
-            [com.sun.jna.ptr LongByReference]))
+  (:require [clj-curl.easy :refer [libcurl]])
+  (:import [com.sun.jna Pointer]
+           [com.sun.jna.ptr LongByReference]))
 
 (defn init
   "https://curl.haxx.se/libcurl/c/curl_multi_init.html"
