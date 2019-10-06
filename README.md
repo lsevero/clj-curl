@@ -45,9 +45,9 @@ The real useful docs are the official ones found at [official docs](https://curl
 
 ## TODO list
 
-* `multi` interface
-* finish the `mime` namespace (lacking only curl_mime_data_cb)
- 
+* `share` interface
+* exception handling
+
 ## License
 
 Copyright © 2019
