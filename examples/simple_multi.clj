@@ -16,8 +16,8 @@
         handlers (take 5 (repeatedly #(MemHandler.)))
         multi (multi/init)
         int-ptr (LongByReference.)]
-    (map easy/setopt curls (repeatedly opts/url) urls)
-    (map easy/setopt curls (repeatedly opts/writefunction) handlers)
+    (doall (map easy/setopt curls (repeat opts/url) urls))
+    (doall (map easy/setopt curls (repeat opts/writefunction) handlers))
     (doseq [curl curls]
       (multi/add-handle multi curl))
     (loop []
