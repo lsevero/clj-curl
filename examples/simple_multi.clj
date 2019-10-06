@@ -21,10 +21,11 @@
     (doseq [curl curls]
       (multi/add-handle multi curl))
     (loop []
-      (multi/perform multi int-ptr)
-      (if (= 0 (.getValue int-ptr))
-        (println "Finished to download all files")
-        (do
-          (println "Downloads remaining " (.getValue int-ptr))
-          (Thread/sleep 100)
-          (recur))))))
+      (if (= opts/e-call-multi-perform (multi/perform multi int-ptr))
+        (recur)
+        (if (= 0 (.getValue int-ptr))
+          (println "Finished to download all files")
+          (do
+            (println "Downloads remaining " (.getValue int-ptr))
+            (Thread/sleep 100)
+            (recur)))))))
