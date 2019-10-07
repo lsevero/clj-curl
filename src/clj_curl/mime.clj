@@ -77,5 +77,15 @@
   [^Pointer part ^String encoding]
   (.invoke (.getFunction libcurl "curl_mime_encoder") Integer (to-array [part encoding])))
 
-;TODO curl_mime_data_cb
-
+(defn mime-data-cb
+  "https://curl.haxx.se/libcurl/c/curl_mime_data_cb.html"
+  ^Integer
+  ([^Pointer part ^Integer datasize readfunc]
+   (mime-data-cb part datasize readfunc Pointer/NULL Pointer/NULL Pointer/NULL))
+  ([^Pointer part ^Integer datasize readfunc arg]
+   (mime-data-cb part datasize readfunc Pointer/NULL Pointer/NULL arg))
+  ([^Pointer part ^Integer datasize readfunc seekfunc arg]
+   (mime-data-cb part datasize readfunc seekfunc Pointer/NULL arg))
+  ([^Pointer part ^Integer datasize readfunc seekfunc freefunc arg]
+   (.invoke (.getFunction libcurl "curl_mime_data_cb") Integer
+            (to-array [part datasize readfunc seekfunc freefunc arg]))))

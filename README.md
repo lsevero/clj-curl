@@ -45,7 +45,6 @@ The real useful docs are the official ones found at [official docs](https://curl
 
 ## TODO list
 
-* `share` interface
 * exception handling
 
 ## License
