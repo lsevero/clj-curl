@@ -1,7 +1,8 @@
 (ns clj-curl.easy
   (:refer-clojure :exclude [send])
   (:import [com.sun.jna NativeLibrary Pointer Memory NativeLong]
-           [com.sun.jna.ptr PointerByReference DoubleByReference LongByReference])
+           [com.sun.jna.ptr PointerByReference DoubleByReference LongByReference]
+           [clj_curl.Exceptions CurlEasyError])
   (:require [clj-curl.opts :as opts]))
 
 (def libcurl (com.sun.jna.NativeLibrary/getInstance "curl"))
@@ -16,7 +17,10 @@
   "https://curl.haxx.se/libcurl/c/curl_easy_perform.html"
   ^Integer 
   [^Pointer curl]
-  (.invoke (.getFunction libcurl "curl_easy_perform") Integer (to-array [curl])))
+  (let [return (.invoke (.getFunction libcurl "curl_easy_perform") Integer (to-array [curl]))]
+    (if (> return opts/e-ok)
+      (throw (CurlEasyError. return))
+      return)))
 
 (defn cleanup
   "https://curl.haxx.se/libcurl/c/curl_easy_cleanup.html"

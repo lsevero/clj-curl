@@ -105,15 +105,15 @@
   :name clj_curl.Exceptions.CurlEasyError
   :extends RuntimeException
   :init init
-  :constructors {[String Long] [String]}
+  :constructors {[Long] [String]}
   :state state
   :prefix "easy-error-" 
   :methods [[getCURLcode [] Long]
             [getCURLcodeName [] String]])
 
 (defn easy-error-init
-  [error errornum]
-  [[(str error " " (easy-errors errornum))] errornum])
+  [errornum]
+  [[(str "CURL EASY ERROR: " (easy-errors errornum))] errornum])
 
 (defn easy-error-getCURLcode
   [this]
@@ -127,15 +127,15 @@
   :name clj_curl.Exceptions.CurlShareError
   :extends RuntimeException
   :init init
-  :constructors {[String Long] [String]}
+  :constructors {[Long] [String]}
   :state state
   :prefix "share-error-" 
   :methods [[getCURLcode [] Long]
             [getCURLcodeName [] String]])
 
 (defn share-error-init
-  [error errornum]
-  [[(str error " " (share-errors errornum))] errornum])
+  [errornum]
+  [[(str "CURL SHARE ERROR: " (share-errors errornum))] errornum])
 
 (defn share-error-getCURLSHcode
   [this]
@@ -149,15 +149,15 @@
   :name clj_curl.Exceptions.CurlMultiError
   :extends RuntimeException
   :init init
-  :constructors {[String Long] [String]}
+  :constructors {[Long] [String]}
   :state state
   :prefix "multi-error-" 
   :methods [[getCURLcode [] Long]
             [getCURLcodeName [] String]])
 
 (defn multi-error-init
-  [error errornum]
-  [[(str error " " (multi-errors errornum))] errornum])
+  [errornum]
+  [[(str "CURL MULTI ERROR: " (multi-errors errornum))] errornum])
 
 (defn multi-error-getCURLSHcode
   [this]
