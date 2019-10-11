@@ -85,8 +85,7 @@
                   93 "CURLE_RECURSIVE_API_CALL"
                   94 "CURLE_AUTH_ERROR"})
 
-(def share-errors {0 "CURLSHE_OK" 
-                   1 "CURLSHE_BAD_OPTION"
+(def share-errors {1 "CURLSHE_BAD_OPTION"
                    2 "CURLSHE_IN_USE"
                    3 "CURLSHE_INVALID"
                    4 "CURLSHE_NOMEM"
