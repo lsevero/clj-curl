@@ -1,9 +1,9 @@
 (ns clj-curl.mime
   (:refer-clojure :exclude [name type])
   (:require [clj-curl.easy :refer [libcurl slist-append slist-free-all]]
-            [clj-curl.opts :as opts]
-            [com.sun.jna Pointer Memory NativeLong])
-  (:import [clj_curl.Exceptions CurlEasyError]))
+            [clj-curl.opts :as opts])
+  (:import [clj_curl.Exceptions CurlEasyError]
+           [com.sun.jna Pointer Memory NativeLong]))
 
 (defn init
   "https://curl.haxx.se/libcurl/c/curl_mime_init.html"
@@ -15,7 +15,7 @@
   "https://curl.haxx.se/libcurl/c/curl_mime_addpart.html"
   ^Pointer
   [^Pointer mime]
-  (.invoke (.getFunction libcurl "curl_mime_addpart") Pointer (to-array [curl])))
+  (.invoke (.getFunction libcurl "curl_mime_addpart") Pointer (to-array [mime])))
 
 (defn name
   "https://curl.haxx.se/libcurl/c/curl_mime_name.html"
