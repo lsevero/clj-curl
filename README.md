@@ -15,6 +15,8 @@ This library tries to be as close as possible to the C API. In case of doubts go
 
 ## Usage
 
+For obvious reasons, this project **needs libcurl to be installed in your system**.
+
 The usage of this library is basically the same as the libcurl in C.
 Everything is mutable, so be careful. This library is just about exposing the C api to the clojure world, without adding a lot of abstractions to make things easier or doing stuff the '''clojure way'''.
 Just create a curl handler wrapped in a function without exposing the curl's state to your applications and you should be fine.
@@ -45,7 +47,7 @@ The real useful docs are the official ones found at [official docs](https://curl
 
 ## TODO list
 
-* exception handling
+* low level file descriptor functions for multi (I don't think someone will ever use one of them in a high level language like clojure though)
 
 ## License
 
