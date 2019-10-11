@@ -3,7 +3,7 @@
   (:require [clj-curl.easy :refer [libcurl slist-append slist-free-all]]
             [clj-curl.opts :as opts]
             [com.sun.jna Pointer Memory NativeLong])
-  (:import [clj-curl.Exceptions CurlEasyError]))
+  (:import [clj_curl.Exceptions CurlEasyError]))
 
 (defn init
   "https://curl.haxx.se/libcurl/c/curl_mime_init.html"
