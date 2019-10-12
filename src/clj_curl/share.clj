@@ -12,9 +12,9 @@
 
 (defn cleanup
   "https://curl.haxx.se/libcurl/c/curl_share_cleanup.html"
-  ^Integer
+  ^Long
   [^Pointer share-handle]
-  (let [return (.invoke (.getFunction libcurl "curl_share_cleanup") Integer (to-array [share-handle]))]
+  (let [return (.invoke (.getFunction libcurl "curl_share_cleanup") Long (to-array [share-handle]))]
     (if (> return opts/e-ok)
       (throw (CurlShareError. return))
       return)))
@@ -22,14 +22,14 @@
 (defn strerror
   "https://curl.haxx.se/libcurl/c/curl_share_strerror.html"
   ^String
-  [^Integer errornum]
+  [^Long errornum]
   (.invoke (.getFunction libcurl "curl_share_strerror") String (to-array [errornum])))
 
 (defn setopt
   "https://curl.haxx.se/libcurl/c/curl_share_setopt.html"
-  ^Integer
-  [^Pointer share ^Integer option parameter]
-  (let [return (.invoke (.getFunction libcurl "curl_share_setopt") Integer (to-array [share option parameter]))]
+  ^Long
+  [^Pointer share ^Long option parameter]
+  (let [return (.invoke (.getFunction libcurl "curl_share_setopt") Long (to-array [share option parameter]))]
     (if (> return opts/e-ok)
       (throw (CurlShareError. return))
       return)))

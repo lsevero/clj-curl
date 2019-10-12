@@ -15,9 +15,9 @@
 
 (defn perform 
   "https://curl.haxx.se/libcurl/c/curl_easy_perform.html"
-  ^Integer 
+  ^Long 
   [^Pointer curl]
-  (let [return (.invoke (.getFunction libcurl "curl_easy_perform") Integer (to-array [curl]))]
+  (let [return (.invoke (.getFunction libcurl "curl_easy_perform") Long (to-array [curl]))]
     (if (> return opts/e-ok)
       (throw (CurlEasyError. return))
       return)))
@@ -29,36 +29,36 @@
 
 (defn getinfo
   "https://curl.haxx.se/libcurl/c/curl_easy_getinfo.html"
-  ^Integer 
-  [^Pointer curl ^Integer opt param]
-  (let [return (.invoke (.getFunction libcurl "curl_easy_getinfo") Integer (to-array [curl opt param]))]
+  ^Long 
+  [^Pointer curl ^Long opt param]
+  (let [return (.invoke (.getFunction libcurl "curl_easy_getinfo") Long (to-array [curl opt param]))]
     (if (> return opts/e-ok)
       (throw (CurlEasyError. return))
       return)))
 
 (defn getinfo-double 
   ^Double
-  [^Pointer curl ^Integer opt]
+  [^Pointer curl ^Long opt]
   (let [p-double (DoubleByReference.)
-        return (.invoke (.getFunction libcurl "curl_easy_getinfo") Integer (to-array [curl opt p-double]))]
+        return (.invoke (.getFunction libcurl "curl_easy_getinfo") Long (to-array [curl opt p-double]))]
     (if (> return opts/e-ok)
       (throw (CurlEasyError. return))
       (.getValue p-double))))
 
 (defn getinfo-long 
   ^Long
-  [^Pointer curl ^Integer opt]
+  [^Pointer curl ^Long opt]
   (let [p-long (LongByReference.)
-        return (.invoke (.getFunction libcurl "curl_easy_getinfo") Integer (to-array [curl opt p-long]))]
+        return (.invoke (.getFunction libcurl "curl_easy_getinfo") Long (to-array [curl opt p-long]))]
     (if (> return (CurlEasyError. return))
       (throw (CurlEasyError. return))
       (.getValue p-long))))
 
 (defn getinfo-string 
   ^String
-  [^Pointer curl ^Integer opt]
+  [^Pointer curl ^Long opt]
   (let [p-str (PointerByReference.)
-        return (.invoke (.getFunction libcurl "curl_easy_getinfo") Integer (to-array [curl opt p-str]))]
+        return (.invoke (.getFunction libcurl "curl_easy_getinfo") Long (to-array [curl opt p-str]))]
     (if (> return opts/e-ok)
       (throw (CurlEasyError. return))
       (let [value (.getValue p-str)]
@@ -89,19 +89,19 @@
 
 (defn setopt 
   "https://curl.haxx.se/libcurl/c/curl_easy_setopt.html"
-  ^Integer
-  [^Pointer curl ^Integer opt param]
+  ^Long
+  [^Pointer curl ^Long opt param]
   (if (= (type param) clojure.lang.PersistentVector)
     (let [slist (Memory. NativeLong/SIZE)]
       (do
         (doseq [s param]
           (slist-append slist s))
-        (let [return (.invoke (.getFunction libcurl "curl_easy_setopt") Integer (to-array [curl opt slist]))]
+        (let [return (.invoke (.getFunction libcurl "curl_easy_setopt") Long (to-array [curl opt slist]))]
           (slist-free-all slist)
           (if (> return opts/e-ok)
             (throw (CurlEasyError. return))
             return))))
-    (let [return (.invoke (.getFunction libcurl "curl_easy_setopt") Integer (to-array [curl opt param]))]
+    (let [return (.invoke (.getFunction libcurl "curl_easy_setopt") Long (to-array [curl opt param]))]
       (if (> return opts/e-ok)
         (throw (CurlEasyError. return))
         return))))
@@ -111,7 +111,7 @@
   ^String
   ([^Pointer curl ^String s]
    (escape curl s (count s)))
-  ([^Pointer curl ^String s ^Integer length]
+  ([^Pointer curl ^String s ^Long length]
    (.invoke (.getFunction libcurl "curl_easy_escape") String (to-array [curl s length]))))
 
 (defn unescape
@@ -122,7 +122,7 @@
 
 (defn getdate
   "https://curl.haxx.se/libcurl/c/curl_getdate.html"
-  ^Integer
+  ^Long
   [^String date-str]
   (.invoke (.getFunction libcurl "curl_getdate") String (to-array [date-str Pointer/NULL])))
 
@@ -134,29 +134,29 @@
 
 (defn pause
   "https://curl.haxx.se/libcurl/c/curl_easy_pause.html"
-  ^Integer
-  [^Pointer curl ^Integer bitmask]
-  (let [return (.invoke (.getFunction libcurl "curl_easy_pause") Integer (to-array [curl bitmask]))]
+  ^Long
+  [^Pointer curl ^Long bitmask]
+  (let [return (.invoke (.getFunction libcurl "curl_easy_pause") Long (to-array [curl bitmask]))]
     (if (> return opts/e-ok)
       (throw (CurlEasyError. return))
       return)))
 
 (defn send
   "https://curl.haxx.se/libcurl/c/curl_easy_send.html"
-  ^Integer
+  ^Long
   ([^Pointer curl buffer ^LongByReference n]
    (send curl buffer (count buffer) n))
-  ([^Pointer curl buffer ^Integer buflen ^LongByReference n]
-   (let [return (.invoke (.getFunction libcurl "curl_easy_send") Integer (to-array [curl buffer buflen n]))]
+  ([^Pointer curl buffer ^Long buflen ^LongByReference n]
+   (let [return (.invoke (.getFunction libcurl "curl_easy_send") Long (to-array [curl buffer buflen n]))]
      (if (> return opts/e-ok)
        (throw (CurlEasyError. return))
        return))))
 
 (defn recv
   "https://curl.haxx.se/libcurl/c/curl_easy_recv.html"
-  ^Integer
-  [^Pointer curl buffer ^Integer buflen ^LongByReference n]
-  (let [return (.invoke (.getFunction libcurl "curl_easy_recv") Integer (to-array [curl buffer buflen n]))]
+  ^Long
+  [^Pointer curl buffer ^Long buflen ^LongByReference n]
+  (let [return (.invoke (.getFunction libcurl "curl_easy_recv") Long (to-array [curl buffer buflen n]))]
     (if (> return opts/e-ok)
       (throw (CurlEasyError. return))
       return)))
@@ -164,14 +164,14 @@
 (defn strerror
   "https://curl.haxx.se/libcurl/c/curl_easy_strerror.html"
   ^String
-  [^Integer errornum]
+  [^Long errornum]
   (.invoke (.getFunction libcurl "curl_easy_strerror") String (to-array [errornum])))
 
 (defn upkeep
   "https://curl.haxx.se/libcurl/c/curl_easy_upkeep.html"
-  ^Integer
+  ^Long
   [^Pointer curl]
-  (let [return (.invoke (.getFunction libcurl "curl_easy_upkeep") Integer (to-array [curl]))]
+  (let [return (.invoke (.getFunction libcurl "curl_easy_upkeep") Long (to-array [curl]))]
     (if (> return opts/e-ok)
       (throw (CurlEasyError. return))
       return)))

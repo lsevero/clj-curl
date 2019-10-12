@@ -3,9 +3,9 @@
 
 (defn init
   "https://curl.haxx.se/libcurl/c/curl_global_init.html"
-  ^Integer
-  [^Integer flags]
-  (.invoke (.getFunction libcurl "curl_global_init") Integer (to-array [flags])))
+  ^Long
+  [^Long flags]
+  (.invoke (.getFunction libcurl "curl_global_init") Long (to-array [flags])))
 
 (defn cleanup
   "https://curl.haxx.se/libcurl/c/curl_global_cleanup.html"
