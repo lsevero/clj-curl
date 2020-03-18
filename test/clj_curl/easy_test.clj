@@ -1,4 +1,5 @@
 (ns clj-curl.easy-test
+  (:refer-clojure :exclude [send])
   (:require [clojure.test :refer :all]
             [clj-curl.easy :refer :all]))
 

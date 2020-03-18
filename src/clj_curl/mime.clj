@@ -32,7 +32,7 @@
   ([^Pointer part ^String data]
    (data part data (count data)))
   ([^Pointer part ^String data ^Long size]
-   (let [return (.invoke (.getFunction libcurl "curl_mime_data") Long (to-array [part s size]))]
+   (let [return (.invoke (.getFunction libcurl "curl_mime_data") Long (to-array [part data size]))]
      (if (> return opts/e-ok)
        (throw (CurlEasyError. return))
        return))))
@@ -41,7 +41,7 @@
   "https://curl.haxx.se/libcurl/c/curl_mime_type.html"
   ^Long
   [^Pointer part ^String mimetype]
-  (let [return (.invoke (.getFunction libcurl "curl_mime_type") Long (to-array [part s]))]
+  (let [return (.invoke (.getFunction libcurl "curl_mime_type") Long (to-array [part mimetype]))]
     (if (> return opts/e-ok)
       (throw (CurlEasyError. return))
       return)))
@@ -75,9 +75,9 @@
   [^Pointer part headers take-ownership]
   (if (= clojure.lang.PersistentVector (type headers))
     (let [slist (Memory. NativeLong/SIZE)]
-      (doseq [s param]
+      (doseq [s headers]
         (slist-append slist s))
-      (let [return (.invoke (.getFunction libcurl "curl_mime_headers") Long (to-array [part headers take-ownership]))]
+      (let [return (.invoke (.getFunction libcurl "curl_mime_headers") Long (to-array [part slist take-ownership]))]
         (slist-free-all slist)
         (if (> return opts/e-ok)
           (throw (CurlEasyError. return))

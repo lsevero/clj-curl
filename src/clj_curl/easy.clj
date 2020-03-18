@@ -5,7 +5,7 @@
            [clj_curl.Exceptions CurlEasyError])
   (:require [clj-curl.opts :as opts]))
 
-(def libcurl (com.sun.jna.NativeLibrary/getInstance "curl"))
+(def ^com.sun.jna.NativeLibrary libcurl (com.sun.jna.NativeLibrary/getInstance "curl"))
 
 (defn init
   "https://curl.haxx.se/libcurl/c/curl_easy_init.html"
