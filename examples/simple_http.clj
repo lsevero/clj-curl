@@ -1,9 +1,9 @@
 (ns simple-http
   (:require [clj-curl.easy :as curl-easy]
             [clj-curl.opts :as opts]
-            [clj-curl.global :as curl-global]
-            )
+            [clj-curl.global :as curl-global])
   (:import [clj_curl.Handlers MemHandler]))
+
 
 (defn simple-http []
   (let [curl (curl-easy/init)
@@ -14,7 +14,11 @@
       ;clj-curl work exactly the same as the C api
       ;this library will try to expose all of the functionality of libcurl as possible
       ;even if is not the "clojure" way of doing things
-      (curl-easy/setopt curl opts/url "http://duckduckgo.com")
+      (curl-easy/setopt curl opts/url "http://www.duckduckgo.com")
+      ;There is no slists in clj-curl, use vectors instead
+      (curl-easy/setopt curl opts/httpheader ["Shoesize: 1234"
+                                              "Omg: lol"
+                                              "Another: header"])
       (curl-easy/setopt curl opts/writefunction mem)
       (curl-easy/perform curl)
       ;the normal getinfo function will return the result through pointer reference

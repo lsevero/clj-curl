@@ -2,7 +2,8 @@
   (:refer-clojure :exclude [send])
   (:import [com.sun.jna NativeLibrary Pointer Memory NativeLong]
            [com.sun.jna.ptr PointerByReference DoubleByReference LongByReference]
-           [clj_curl.Exceptions CurlEasyError])
+           [clj_curl.Exceptions CurlEasyError]
+           CurlSlist)
   (:require [clj-curl.opts :as opts]))
 
 (def ^com.sun.jna.NativeLibrary libcurl (com.sun.jna.NativeLibrary/getInstance "curl"))
@@ -37,6 +38,7 @@
       return)))
 
 (defn getinfo-double 
+  "Wrapper on getinfo to return a double"
   ^Double
   [^Pointer curl ^Long opt]
   (let [p-double (DoubleByReference.)
@@ -46,6 +48,7 @@
       (.getValue p-double))))
 
 (defn getinfo-long 
+  "Wrapper on getinfo to return a long"
   ^Long
   [^Pointer curl ^Long opt]
   (let [p-long (LongByReference.)
@@ -55,6 +58,7 @@
       (.getValue p-long))))
 
 (defn getinfo-string 
+  "Wrapper on getinfo to return a string"
   ^String
   [^Pointer curl ^Long opt]
   (let [p-str (PointerByReference.)
@@ -75,32 +79,21 @@
   [^Pointer curl]
   (.invoke (.getFunction libcurl "curl_easy_reset") Void (to-array [curl])))
 
-(defn slist-append
-  "https://curl.haxx.se/libcurl/c/curl_slist_append.html"
-  ^Pointer
-  [^Pointer slist ^String s]
-  (.invoke (.getFunction libcurl "curl_slist_append") Pointer (to-array [slist s])))
-
-(defn slist-free-all
-  "https://curl.haxx.se/libcurl/c/curl_slist_free_all.html"
-  ^Pointer
-  [^Pointer slist]
-  (.invoke (.getFunction libcurl "curl_slist_free_all") Void (to-array [slist])))
-
 (defn setopt 
   "https://curl.haxx.se/libcurl/c/curl_easy_setopt.html"
   ^Long
   [^Pointer curl ^Long opt param]
-  (if (= (type param) clojure.lang.PersistentVector)
-    (let [slist (Memory. NativeLong/SIZE)]
-      (do
-        (doseq [s param]
-          (slist-append slist s))
-        (let [return (.invoke (.getFunction libcurl "curl_easy_setopt") Long (to-array [curl opt slist]))]
-          (slist-free-all slist)
-          (if (> return opts/e-ok)
-            (throw (CurlEasyError. return))
-            return))))
+  (if (sequential? param)
+    (let [slist (->> (mapv #(if (string? %)
+                             (CurlSlist$ByReference. %)
+                             (throw (Exception. (str "Element " % " is NOT a string. All elements of a slist should be strings. param = " param)))) param)
+                     (partition 2 1)
+                     (mapv #(do (.setNext ^CurlSlist$ByReference (nth % 0) (nth % 1)) %)))
+          head (ffirst slist)]
+      (let [return (.invoke (.getFunction libcurl "curl_easy_setopt") Long (to-array [curl opt head]))]
+        (if (> return opts/e-ok)
+          (throw (CurlEasyError. return))
+          return)))
     (let [return (.invoke (.getFunction libcurl "curl_easy_setopt") Long (to-array [curl opt param]))]
       (if (> return opts/e-ok)
         (throw (CurlEasyError. return))
