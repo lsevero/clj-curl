@@ -84,13 +84,18 @@
   ^Long
   [^Pointer curl ^Long opt param]
   (if (sequential? param)
-    (let [slist (->> (mapv #(if (string? %)
+    (let [slist (case (count param)
+                  0 (throw (Exception. "param is empty!!!"))
+                  1 (if (string? (first param))
+                      (CurlSlist$ByReference. (first param))
+                      (throw (Exception. (str (first param) " is NOT a string!! The list should contain only strings."))))
+                  (->> (mapv #(if (string? %)
                              (CurlSlist$ByReference. %)
                              (throw (Exception. (str "Element " % " is NOT a string. All elements of a slist should be strings. param = " param)))) param)
                      (partition 2 1)
-                     (mapv #(do (.setNext ^CurlSlist$ByReference (nth % 0) (nth % 1)) %)))
-          head (ffirst slist)]
-      (let [return (.invoke (.getFunction libcurl "curl_easy_setopt") Long (to-array [curl opt head]))]
+                     (mapv #(do (.setNext ^CurlSlist$ByReference (nth % 0) (nth % 1)) %))
+                     ffirst))]
+      (let [return (.invoke (.getFunction libcurl "curl_easy_setopt") Long (to-array [curl opt slist]))]
         (if (> return opts/e-ok)
           (throw (CurlEasyError. return))
           return)))
